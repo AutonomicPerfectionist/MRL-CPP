@@ -1,13 +1,24 @@
-// test.cpp
+#define ASIO_STANDALONE
 
 #include <iostream>
 
-using namespace std;
+#include <websocketpp/config/asio_no_tls.hpp>
+#include <websocketpp/server.hpp>
 
-int main(void) {
+typedef websocketpp::server<websocketpp::config::asio> server;
 
-     cout << "Hello World" << endl;
+void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
+        std::cout << msg->get_payload() << std::endl;
+}
 
-     return(0);
+int main() {
+    server print_server;
 
+    print_server.set_message_handler(&on_message);
+
+    print_server.init_asio();
+    print_server.listen(9002);
+    print_server.start_accept();
+
+    print_server.run();
 }
