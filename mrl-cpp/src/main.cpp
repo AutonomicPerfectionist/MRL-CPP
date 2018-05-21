@@ -1,9 +1,10 @@
 #define ASIO_STANDALONE
 
 #include <iostream>
-
+#include <string>
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
+#include "MCommand.hpp"
 
 typedef websocketpp::server<websocketpp::config::asio> server;
 
@@ -12,6 +13,8 @@ void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
 }
 
 int main() {
+    MCommand* m = new MCommand();
+    m->connect("localhost", 8888);
     server print_server;
 
     print_server.set_message_handler(&on_message);
